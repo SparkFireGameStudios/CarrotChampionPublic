@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Tree
+  - Stone
+  - Fences
+  - Plants
+  - House
+  - Border
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Back
+    uniqueID: 1740369387
+    locked: 0
+  - name: Middle
+    uniqueID: 201831751
+    locked: 0
+  - name: Middle_decoration
+    uniqueID: 3333919727
+    locked: 0
+  - name: Instance
+    uniqueID: 2461489017
+    locked: 0
+  - name: Front
+    uniqueID: 1396077717
+    locked: 0
+  - name: JumPos
+    uniqueID: 2019329661
+    locked: 0
