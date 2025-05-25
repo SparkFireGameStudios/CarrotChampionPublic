@@ -1,7 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using Utils;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -14,7 +13,7 @@ public class PlayerControl : MonoBehaviour
     #endregion
 
     public float m_MoveSpeed;
-    [SerializeField] private Animator _animator;
+    private Animator _animator;
 
     public enum PlayerState { Alive, Dead }
     
@@ -33,7 +32,7 @@ public class PlayerControl : MonoBehaviour
     private bool _gameover;
     
     [SerializeField]
-    private bool _canControl = true;
+    private bool _canControl = false;
     
     [SerializeField]
     private int jumpScore = 1; // 小跳跃得分
@@ -44,9 +43,26 @@ public class PlayerControl : MonoBehaviour
     private float _currentJumpTime = 0f; // 当前时间
     
     private BoxCollider2D _boxCollider2D;
+    
+    private Vector2 _touchPosition;  // 触摸位置
+
+    private bool _canJump = false;
+    
+    private enum Direction
+    {
+        Idle,
+        Up,
+        Right,
+        Left,
+    }
+
+    private Direction _dir = Direction.Idle;
+    
     private void OnEnable()
     {
         EventHandler.JumpEvent += OnJumpStart;
+        
+        _canControl = true;
     }
 
     private void OnDisable()
@@ -61,9 +77,11 @@ public class PlayerControl : MonoBehaviour
         
         _gameover = false;
         _currentScore = 0;
+        _canJump = false;
         
         _startPosition = transform.position;
         _destination = transform.position;
+        
     }
 
     private void FixedUpdate()
@@ -75,12 +93,12 @@ public class PlayerControl : MonoBehaviour
         if (_isJumping)
         {
             _currentJumpTime += Time.fixedDeltaTime;
-            transform.position = Vector2.Lerp(_startPosition, _destination, _currentJumpTime);
+            _rb.position = Vector2.Lerp(_startPosition, _destination, _currentJumpTime);
             if (_currentJumpTime >= _jumpTime)
             {
                 _isJumping = false;
                 _currentJumpTime = 0f;
-                transform.position = _destination;
+                _rb.position = _destination;
                 _destination = transform.position;
                 _startPosition = transform.position;
                 _boxCollider2D.enabled = true;
@@ -97,46 +115,11 @@ public class PlayerControl : MonoBehaviour
             return;
         if (_isJumping)
             return;
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (_canJump)
         {
-            _destination = new Vector2(this.transform.position.x,this.transform.position.y+4);
-            _isJumping = true;
-            _animator.SetTrigger(IdleUp);
-            _boxCollider2D.enabled = false;
-            
-            EventHandler.CallJumpEvent();
-            AudioManager.Instance?.PlayJumpFx();
+            TriggerJump();
+            _canJump = false;
         }
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            _destination = new Vector2(this.transform.position.x-4,this.transform.position.y);
-            _isJumping = true;
-            _animator.SetTrigger(IdleLeft);
-            _boxCollider2D.enabled = false;
-            
-            EventHandler.CallJumpEvent();
-            AudioManager.Instance?.PlayJumpFx();
-        }
-        
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            _destination = new Vector2(this.transform.position.x+4,this.transform.position.y);
-            _isJumping = true;
-            _animator.SetTrigger(IdleRight);
-            _boxCollider2D.enabled = false;
-            
-            EventHandler.CallJumpEvent();
-            AudioManager.Instance?.PlayJumpFx();
-        }
-        // if (Input.GetKey(KeyCode.DownArrow))
-        // {
-        //     _destination = new Vector2(this.transform.position.x,this.transform.position.y-4);
-        //     _isJumping = true;
-        //     _animator.SetTrigger(IdleDown);
-        //     
-        //     EventHandler.CallJumpEvent();
-        //     AudioManager.Instance?.PlayJumpFx();
-        // }
     }
 
     public void LevelComplete() {
@@ -197,5 +180,80 @@ public class PlayerControl : MonoBehaviour
     private void OnJumpStart()
     {
         MapManager.Instance.CheckPosition();
+    }
+
+    public void GetTouchPosition(InputAction.CallbackContext context)
+    {
+        if (!context.performed)
+            return;
+        if (_isJumping)
+            return;
+        if (!_canControl)
+            return;
+        
+        Core.Log(context.ReadValue<Vector2>().ToString());
+        _canJump = true;
+            
+        // 把点击区域的屏幕坐标转换为世界坐标
+        _touchPosition = Camera.main.ScreenToWorldPoint(context.ReadValue<Vector2>());
+        // 计算点击区域与主角的插值 并向量化
+        var offset = ((Vector3)_touchPosition - transform.position).normalized;
+
+        // 判断点击区域的方向
+        if (Mathf.Abs(offset.x) <= 0.2f)
+        {
+            if(Mathf.Abs(offset.y) <= 0.2f)
+            {
+                return;
+            }
+            _dir = Direction.Up;
+        }
+        else if (offset.x > 0)
+        {
+            _dir = Direction.Right;
+        }
+        else
+        {
+            _dir = Direction.Left;
+        }
+    }
+
+    // public void Jump(InputAction.CallbackContext context)
+    // {
+    //     
+    // }
+    
+    /// <summary>
+    /// 触发执行跳跃动作
+    /// </summary>
+    public void TriggerJump()
+    {
+        switch (_dir)
+        {
+            case Direction.Up:
+                _destination = new Vector2(this.transform.position.x,this.transform.position.y+4);
+                _isJumping = true;
+                _animator.SetTrigger(IdleUp);
+                _boxCollider2D.enabled = false;
+                EventHandler.CallJumpEvent();
+                break;
+            case Direction.Right:
+                _destination = new Vector2(this.transform.position.x+4,this.transform.position.y);
+                _isJumping = true;
+                _animator.SetTrigger(IdleRight);
+                _boxCollider2D.enabled = false;
+                EventHandler.CallJumpEvent();
+                break;
+            case Direction.Left:
+                _destination = new Vector2(this.transform.position.x-4,this.transform.position.y);
+                _isJumping = true;
+                _animator.SetTrigger(IdleLeft);
+                _boxCollider2D.enabled = false;
+                EventHandler.CallJumpEvent();
+                break;
+            default:
+                Core.LogError("[LOG] 触发跳跃失败");
+            break;
+        }
     }
 }

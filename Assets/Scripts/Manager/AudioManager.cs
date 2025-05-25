@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class AudioManager : SingletonMonobehaviour<AudioManager>
 {
@@ -16,6 +17,7 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
     private void OnEnable()
     {
         EventHandler.GameOverEvent += OnGameOverEvent;
+        EventHandler.JumpEvent += OnJumpEvent;
         
         // …Ë÷√“Ù–ß
         SetBgm();
@@ -27,6 +29,7 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
     private void OnDisable()
     {
         EventHandler.GameOverEvent -= OnGameOverEvent;
+        EventHandler.JumpEvent -= OnJumpEvent;
     }
 
     public void SetBgm()
@@ -64,5 +67,34 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
             audioMixer.SetFloat("MasterVolume", 0);
         else
             audioMixer.SetFloat("MasterVolume", -80);
+    }
+    
+    public void OnClickButtonMusic(bool isOn)
+    {
+        if (isOn)
+        {
+            audioMixer.SetFloat("BGM", 0);
+        }
+        else
+        {
+            audioMixer.SetFloat("BGM", -80);
+        }
+    }
+    
+    public void OnClickButtonSound(bool isOn)
+    {
+        if (isOn)
+        {
+            audioMixer.SetFloat("FX", 0);
+        }
+        else
+        {
+            audioMixer.SetFloat("FX", -80);
+        }
+    }
+    
+    private void OnJumpEvent()
+    {
+        PlayJumpFx();
     }
 }

@@ -9,18 +9,18 @@ namespace Utils
             // 编辑器模式下打印日志
             if (UnityEngine.Application.isEditor)
             {
-                Debug.Log(string.Format(message, args));
+                Debug.Log("[LOG] "+string.Format(message, args));
             }
         }
 
         public static void LogWarning(string message, params object[] args)
         {
-            Debug.LogWarning(string.Format(message, args));
+            Debug.LogWarning("[WARRING] "+string.Format(message, args));
         }
 
         public static void LogError(string message, params object[] args)
         {
-            Debug.LogError(string.Format(message, args));
+            Debug.LogError("[ERROR] "+string.Format(message, args));
         }
     }
 }

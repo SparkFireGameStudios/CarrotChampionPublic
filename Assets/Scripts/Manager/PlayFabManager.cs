@@ -70,7 +70,7 @@ public class PlayFabManager : SingletonMonobehaviour<PlayFabManager>
         {
             Debug.Log("[LOG] ÕÊº“DisplayName: " + "Œ¥…Ë÷√");
         }
-        _startPanel.Init();
+        _startPanel.RefreshDisplayName();
     }
     
     #endregion

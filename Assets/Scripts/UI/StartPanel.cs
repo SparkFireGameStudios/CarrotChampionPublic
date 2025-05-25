@@ -3,6 +3,7 @@ using PlayFab.ClientModels;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
+using UnityEngine.InputSystem;
 
 namespace UI
 {
@@ -15,12 +16,20 @@ namespace UI
         public InputField _inputFieldName;
         public Button _btnSetName;
         public Text _name;
+
+        public GameObject _settingPanel;
         
+        private void OnEnable()
+        {
+            Core.Log("StartPanel OnEnable");
+            Init();
+        }
+
         public void Init()
         {
             _btnSetName.onClick.AddListener(OnClickSetName);
-            
             RefreshDisplayName();
+            _settingPanel.SetActive(false);
         }
         
         public void RefreshDisplayName()
@@ -58,8 +67,7 @@ namespace UI
 
         public void OnClickSetting()
         {
-            Core.Log("Setting");
-            
+            _settingPanel.SetActive(true);
         }
         
         private void OnDisplayNameUpdateSuccess(UpdateUserTitleDisplayNameResult obj)
