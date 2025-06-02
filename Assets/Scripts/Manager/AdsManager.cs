@@ -26,6 +26,7 @@ public class AdsManager : SingletonMonobehaviour<AdsManager>, IUnityAdsInitializ
 #endif
         if(Advertisement.isSupported&& !Advertisement.isInitialized)
         {
+            Debug.Log("[LOG] UnityAds ≥ı ºªØ."+_gameId+" "+_testMode);
             Advertisement.Initialize(_gameId, _testMode, this);
         }
         else if (Advertisement.isSupported && Advertisement.isInitialized)
@@ -34,7 +35,7 @@ public class AdsManager : SingletonMonobehaviour<AdsManager>, IUnityAdsInitializ
         }
         else
         {
-            Debug.LogError("Unity Ads is not supported on this platform.");
+            Debug.LogError("[LOG] Unity Ads is not supported on this platform.");
         }
         
     }
@@ -47,7 +48,7 @@ public class AdsManager : SingletonMonobehaviour<AdsManager>, IUnityAdsInitializ
 
     public void OnInitializationFailed(UnityAdsInitializationError error, string message)
     {
-        Debug.LogError($"Unity Ads initialization failed: {error.ToString()} - {message}");
+        Debug.LogError($"[ERROR] Unity Ads initialization failed: {error.ToString()} - {message}");
         // Handle initialization failure here
     }
 }

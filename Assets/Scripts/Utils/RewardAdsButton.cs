@@ -17,6 +17,8 @@ public class RewardAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
     // 当前使用的广告ID
     private string _adUnitId = null;
 
+    public Text _textTips;
+
     /// <summary>
     /// 初始化广告id，并且禁用按钮点击
     /// </summary>
@@ -30,6 +32,8 @@ public class RewardAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
         _adUnitId = _androidAdUnitId;
 #endif
         _button.interactable = false;
+        
+        _textTips.text = "初始化广告中...";
     }
 
     // 界面激活时加载广告
@@ -43,12 +47,14 @@ public class RewardAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
     {
         Debug.Log("加载广告: " + _adUnitId);
         Advertisement.Load(_adUnitId, this);
+        _textTips.text = "加载广告中..."+ _adUnitId;
     }
 
     // 当广告加载成功时调用
     public void OnUnityAdsAdLoaded(string adUnitId)
     {
         Debug.Log("广告加载完成: " + adUnitId);
+        _textTips.text = "广告加载完成 "+adUnitId;
         if (adUnitId.Equals(_adUnitId))
         {
             _button.onClick.AddListener(ShowAd);
@@ -68,6 +74,7 @@ public class RewardAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
     {
         Debug.LogError($"广告加载失败 : {adUnitId} - {error.ToString()} - {message}");
         // Handle ad loading failure here
+        _textTips.text = "广告加载失败 "+adUnitId;
     }
 
     // 当广告播放失败时调用
