@@ -5,3 +5,6 @@
 /UserSettings
 /*.sln
 UserSettings
+/.idea
+/obj
+/UserSettings/Layouts
