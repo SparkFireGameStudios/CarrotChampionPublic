@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using PlayFab;
 using PlayFab.ClientModels;
@@ -6,12 +7,16 @@ using UnityEngine;
 
 public class PlayFabManager : SingletonMonobehaviour<PlayFabManager>
 {
+    [Header("是否跳过登录界面")]
+    public bool _jumpLogin = false;
+    
+    [Space(10)]
+    
     public List<PlayerLeaderboardEntry> _scoreList = new List<PlayerLeaderboardEntry>();
 
     // 玩家展示的名字
     public string _displayName;
     
-    [SerializeField]
     private StartPanel _startPanel;
 
     protected override void Awake()
@@ -24,9 +29,16 @@ public class PlayFabManager : SingletonMonobehaviour<PlayFabManager>
         }
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        Login();
+        if (_jumpLogin)
+        {
+            //_startPanel.ShowStarNoLogin();
+        }
+        else
+        {
+            Login();
+        }
     }
 
     #region PlayFab Login

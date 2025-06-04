@@ -8,6 +8,8 @@ using UnityEngine.Advertisements;
 /// </summary>
 public class RewardAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
 {
+    [Header("是否启动广告功能")]
+    public bool _activeAds = true;
     // 看广告按钮
     [SerializeField] private Button _button;
     // android 广告ID
@@ -24,6 +26,10 @@ public class RewardAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
     /// </summary>
     private void Awake()
     {
+        if (!_activeAds)
+        {
+            return;
+        }
 #if Unity_IOS
             _adUnitId = _iOSAdUnitId;
 #elif UNITY_ANDROID
@@ -39,6 +45,10 @@ public class RewardAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
     // 界面激活时加载广告
     private void OnEnable()
     {
+        if (!_activeAds)
+        {
+            return;
+        }
         LoadAd();
     }
 

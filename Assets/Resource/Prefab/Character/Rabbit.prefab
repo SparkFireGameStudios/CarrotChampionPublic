@@ -58,6 +58,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4254932087791289096}
   - component: {fileID: 4254932087791289103}
+  - component: {fileID: 3014841391499936172}
   m_Layer: 0
   m_Name: Control
   m_TagString: Untagged
@@ -73,7 +74,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4254932087791289097}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -104,6 +105,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3014841391499936172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4254932087791289097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9e91eca1fde5374fbc9587f3aeb5b3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerControl: {fileID: 0}
 --- !u!1 &4254932087991368289
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,7 +188,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.25}
+  m_Offset: {x: 0, y: 0.28206778}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -185,7 +199,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.30672836}
   m_EdgeRadius: 0
 --- !u!114 &1939086825
 MonoBehaviour:
@@ -217,7 +231,7 @@ MonoBehaviour:
       - m_Target: {fileID: 4254932087991368294}
         m_TargetAssemblyTypeName: PlayerControl, Assembly-CSharp
         m_MethodName: Jump
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -232,7 +246,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4254932087991368294}
         m_TargetAssemblyTypeName: PlayerControl, Assembly-CSharp
-        m_MethodName: TouchPosition
+        m_MethodName: GetTouchPosition
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -244,6 +258,14 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: fc34859e-1a71-4412-a42f-7cf371ba69a7
     m_ActionName: Rabbit/Touch Position
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d98fd21c-3e63-453d-82b0-fe72b8d6ee35
+    m_ActionName: UI/Point
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3d6bfdf5-c149-4581-9995-a8284169af80
+    m_ActionName: UI/Click
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Rabbit
@@ -261,12 +283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f2e67a8bfea1c54880f1d4a9dc81a4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MoveSpeed: 4
-  _animator: {fileID: 0}
-  playerState: 0
-  _isJumping: 0
-  _canControl: 1
-  jumpScore: 1
+  _jumpScore: 1
   _currentScore: 0
 --- !u!1 &4254932088524197939
 GameObject:

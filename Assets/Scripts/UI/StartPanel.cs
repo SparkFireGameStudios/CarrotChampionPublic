@@ -1,3 +1,4 @@
+using System;
 using Manager;
 using PlayFab.ClientModels;
 using UnityEngine;
@@ -18,18 +19,29 @@ namespace UI
         public Text _name;
 
         public GameObject _settingPanel;
-        
+
+        private void Awake()
+        {
+            _btnSetName.onClick.AddListener(OnClickSetName);
+            // _settingPanel.SetActive(false);
+            // _objSetName.SetActive(false);
+            // _objName.SetActive(false);
+            // RefreshDisplayName();
+            ShowStarNoLogin();
+        }
+
         private void OnEnable()
         {
             Core.Log("StartPanel OnEnable");
-            Init();
         }
 
-        public void Init()
+        // 显示开始游戏按钮，跳过名字逻辑
+        public void ShowStarNoLogin()
         {
-            _btnSetName.onClick.AddListener(OnClickSetName);
-            RefreshDisplayName();
-            _settingPanel.SetActive(false);
+            Core.Log("显示登录界面");
+            _objSetName.SetActive(false);
+            _objName.SetActive(false);
+            _objBtnStartGame.SetActive(true);
         }
         
         public void RefreshDisplayName()

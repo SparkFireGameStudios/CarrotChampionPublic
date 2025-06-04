@@ -1259,53 +1259,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3845506568432678963, guid: b4053a830800faa4f9438124e810b446, type: 3}
   m_PrefabInstance: {fileID: 500830095}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &515577425
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 515577426}
-  - component: {fileID: 515577427}
-  m_Layer: 0
-  m_Name: PlayFabManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &515577426
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 515577425}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &515577427
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 515577425}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6906e58ecd1f83248b6cde8de2c551fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _scoreList: []
-  _displayName: 
-  _startPanel: {fileID: 2114228082}
 --- !u!1001 &519005945
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7280,53 +7233,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!1 &1153074614
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1153074615}
-  - component: {fileID: 1153074616}
-  m_Layer: 0
-  m_Name: AdsManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1153074615
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1153074614}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1153074616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1153074614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5319385e8c746ee419f810e639815d00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _androidGameId: 5853988
-  _iOSGameId: 5853989
-  _testMode: 0
 --- !u!1 &1193360501
 GameObject:
   m_ObjectHideFlags: 0
@@ -13041,7 +12947,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerScores: []
-  _isGlobalScore: 1
+  _isUsePlayFab: 0
+  _isUseUnityAds: 0
 --- !u!4 &2045913334 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4778788280588578193, guid: 7a1b88c29cc002042aebd5ed92907ae4, type: 3}

@@ -17,34 +17,28 @@ public class PlayerControl : MonoBehaviour
 
     #endregion
 
-    private Animator _animator;
+    #region Component
+    private Animator _animator; // 角色动画控制器
+    private Rigidbody2D _rb; // 角色刚体
+    private BoxCollider2D _boxCollider2D; // 角色碰撞体 用于跳跃过程中关闭
+    #endregion
 
-    public enum PlayerState
-    {
-        Alive,
-        Dead
-    }
+    private Vector2 _startPosition; // 角色起始位置
+    private Vector2 _destination; // 角色跳跃目标位置
 
-    public PlayerState playerState = PlayerState.Alive;
+    private bool _isJumping = false; // 是否正在跳跃
 
-    private Vector2 _startPosition;
-    private Vector2 _destination;
+    private bool _gameover; // 游戏是否结束
 
-    private bool _isJumping = false;
+    private bool _canControl = false; // 是否可以控制角色
 
-    private Rigidbody2D _rb;
-
-    private bool _gameover;
-
-    private bool _canControl = false;
-
+    [Header("得分相关")]
     [SerializeField] private int _jumpScore = 1; // 小跳跃得分
     [SerializeField] private int _currentScore; // 当前得分
 
-    private float _jumpTime = 1f; // 跳跃时间
+    private readonly float _jumpTime = 1f; // 跳跃时间
     private float _currentJumpTime = 0f; // 当前时间
 
-    private BoxCollider2D _boxCollider2D;
 
     private Vector2 _touchPosition; // 触摸位置
 
@@ -97,17 +91,13 @@ public class PlayerControl : MonoBehaviour
         if (_isJumping)
         {
             _currentJumpTime += Time.fixedDeltaTime;
+            if (_currentJumpTime >= _jumpTime)
+            {
+                _currentJumpTime = _jumpTime;
+                _isJumping = false;
+                Core.Log("[LOG] 跳跃完成");
+            }
             _rb.position = Vector2.Lerp(_startPosition, _destination, _currentJumpTime);
-            // if (_currentJumpTime >= _jumpTime)
-            // {
-            //     _isJumping = false;
-            //     _currentJumpTime = 0f;
-            //     _rb.position = _destination;
-            //     _destination = transform.position;
-            //     _startPosition = transform.position;
-            //     _boxCollider2D.enabled = true;
-            //     FinishJumpAnimationEvent();
-            // }
         }
     }
 
@@ -247,6 +237,8 @@ public class PlayerControl : MonoBehaviour
     public void TriggerJump()
     {
         _canJump = false;
+        _currentJumpTime = 0f;
+        _startPosition = transform.position;
         switch (_dir)
         {
             case Direction.Up:
@@ -285,15 +277,11 @@ public class PlayerControl : MonoBehaviour
     // FinishJumpAnimationEvent 
     public void FinishJumpAnimationEvent()
     {
-        _isJumping = false;
-        _currentJumpTime = 0f;
-        _rb.position = _destination;
-        _destination = transform.position;
-        _startPosition = transform.position;
         _boxCollider2D.enabled = true;
-        
         _currentScore += _jumpScore;
         EventHandler.CallGetPointEvent(_currentScore);
+        
+        Core.Log("[LOG] 动画播放完成");
     }
 
     #endregion

@@ -3,15 +3,21 @@ using UnityEngine.Advertisements;
 
 public class AdsManager : SingletonMonobehaviour<AdsManager>, IUnityAdsInitializationListener
 {
-        
+    [Header("使用Unity Ads")] public bool _isUseUnityAds = false;
+    [Space(10)]
+    
     [SerializeField] private string _androidGameId;
     [SerializeField] private string _iOSGameId;
     [SerializeField] private bool _testMode = true;
     private string _gameId;
-
-    protected override void Awake()
+    
+    private void OnEnable()
     {
-        base.Awake();
+        if(_isUseUnityAds == false)
+        {
+            Debug.Log("[LOG] Unity Ads 功能未启用.");
+            return;
+        }
         InitAds();
     }
 

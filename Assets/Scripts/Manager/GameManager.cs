@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using PlayFab.ClientModels;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class GameManager : SingletonMonobehaviour<GameManager>
 {
@@ -15,16 +12,15 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     private string _dataPath;
 
     // 是否使用PlayFab的分数
-    public bool _isGlobalScore = false;
+    [Header("使用PlayFab")] public bool _isUsePlayFab = false;
+    [Header("使用Unity Ads")] public bool _isUseUnityAds = false;
 
     protected override void Awake()
     {
         base.Awake();
         // 本地存储的地址
         _dataPath = Application.persistentDataPath + "/rank.json";
-
         _playerScores = GetPlayerScoresData();
-
     }
 
     public void OnEnable()
@@ -47,9 +43,12 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     // 读取保存的数据记录
     public List<PlayerLeaderboardEntry> GetPlayerScoresData()
     {
-        if (_isGlobalScore)
+        // 如果使用PlayFab，则从PlayFab获取分数列表
+        if (_isUsePlayFab)
         {
-            return PlayFabManager.Instance._scoreList;
+            // 获取最新数据
+            PlayFabManager.Instance?.GetLeaderboardData();
+            return PlayFabManager.Instance?._scoreList;
         }
         else
         {
@@ -63,15 +62,22 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         return new List<PlayerLeaderboardEntry>();
     }
 
+    // 当获取到分数时调用
     private void OnGetPoint(int score)
     {
         _score = score;
     }
 
+    public int GetScore()
+    {
+        return _score;
+    }
+
     // 是否发送分数到PlayFab
     private void SendScore(int score)
     {
-        if (_isGlobalScore)
+        // 如果使用PlayFab，发送分数
+        if (_isUsePlayFab)
         {
             // 发送数据到PlayFab
             PlayFabManager.Instance.SendLeaderboard(_score);
@@ -79,26 +85,24 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         else
         {
             Debug.Log("[LOG] 游戏结束 得分:" + score);
-            // if (_playerScores.Contains(_score))
-            // {
-            //     return;
-            // }
 
             // 保存本次得分数据到json
-            PlayerLeaderboardEntry _score = new PlayerLeaderboardEntry
-            {
-                DisplayName = PlayFabManager.Instance._displayName,
-                StatValue = score,
-            };
-            _playerScores.Add(_score);
-
-            _playerScores.Sort(
-                (x, y) => x.StatValue.CompareTo(y.StatValue));
-            _playerScores.Reverse();
-
-            // 将数据写入json
-            string json = JsonConvert.SerializeObject(_playerScores);
-            File.WriteAllText(_dataPath, json);
+            // PlayerLeaderboardEntry _score = new PlayerLeaderboardEntry
+            // {
+            //     DisplayName = PlayFabManager.Instance._displayName,
+            //     StatValue = score,
+            // };
+            // _playerScores.Add(_score);
+            //
+            // _playerScores.Sort
+            // (
+            //     (x, y) => x.StatValue.CompareTo(y.StatValue)
+            // );
+            // _playerScores.Reverse();
+            //
+            // // 将数据写入json
+            // string json = JsonConvert.SerializeObject(_playerScores);
+            // File.WriteAllText(_dataPath, json);
         }
     }
 
@@ -106,7 +110,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     {
         SendScore(_score);
         Debug.Log("[LOG] 游戏结束 得分:" + _score);
-        
+
         MapManager.Instance?.ResetPosition();
     }
 }
